@@ -5,6 +5,7 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -24,18 +25,27 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(firebaseApp);
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
+// auth is used as our application or firebase instance authentication memory bank tracking all of our authentication state regardless of where our app is going
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
+
+// DB instance
 export const db = getFirestore();
 
+// create user reference in database
 export const createUserDocumentFromAuth = async (userAuth) => {
+  if (!userAuth) return;
   // check if there is existing document reference (reference mean the actual instance of document model)
   const userDocRef = doc(db, "users", userAuth.uid); //1- database, 2- name of collection 3- name of document
   console.log(userDocRef);
@@ -62,4 +72,9 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   }
   // if it exists just return the reference anyways
   return userDocRef;
+};
+
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
