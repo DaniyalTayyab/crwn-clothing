@@ -44,7 +44,10 @@ export const signInWithGoogleRedirect = () =>
 export const db = getFirestore();
 
 // create user reference in database
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
   if (!userAuth) return;
   // check if there is existing document reference (reference mean the actual instance of document model)
   const userDocRef = doc(db, "users", userAuth.uid); //1- database, 2- name of collection 3- name of document
@@ -65,6 +68,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         displayName,
         email,
         createdAt,
+        ...additionalInformation,
       });
     } catch (err) {
       console.log("Error in creating user", err.message);
@@ -74,6 +78,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   return userDocRef;
 };
 
+// authentication with email and password
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password);
