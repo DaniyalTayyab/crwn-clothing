@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { useState } from "react";
 import {
   createAuthUserWithEmailAndPassword,

@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { useState } from "react";
 import {
   signInWithGooglePopup,
@@ -32,8 +31,8 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      const response = await signInUserWithEmailAndPassword(email, password);
-      console.log(response);
+      const { user } = await signInUserWithEmailAndPassword(email, password);
+
       resetFormFields();
     } catch (error) {
       console.log(error);
@@ -42,8 +41,8 @@ const SignInForm = () => {
 
   const SignInWIthGoogle = async () => {
     try {
-      const { user } = await signInWithGooglePopup();
-      await createUserDocumentFromAuth(user);
+      await signInWithGooglePopup();
+      // await createUserDocumentFromAuth(user); we are no storing user in UserContext
     } catch (err) {
       console.log(err);
     }
