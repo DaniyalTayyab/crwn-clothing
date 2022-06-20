@@ -3,30 +3,34 @@ import { useContext } from "react";
 import { CartContext } from "../../contexts/cart.context";
 
 import "./checkout.styles.scss";
+import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
 const Checkout = () => {
-  const { cartItems, incrementCount } = useContext(CartContext);
+  const { cartItems, cartTotal } = useContext(CartContext);
+
   return (
-    <div>
-      {cartItems.map((item) => {
-        const { name, quantity, price, imageUrl } = item;
-        return (
-          <div>
-            <img src={imageUrl} alt={`${imageUrl}`} />
-            <div>
-              <span>{name},</span>
-              <span>
-                <span>-</span> quantity: {quantity}
-                <span onClick={incrementCount} style={{ cursor: "pointer" }}>
-                  +
-                </span>
-                ,
-              </span>
-              <span>${price * quantity}</span>
-            </div>
-          </div>
-        );
-      })}
+    <div className="checkout-container">
+      <div className="checkout-header">
+        <div className="header-block">
+          <span>Product</span>
+        </div>
+        <div className="header-block">
+          <span>Description</span>
+        </div>
+        <div className="header-block">
+          <span>Quantity</span>
+        </div>
+        <div className="header-block">
+          <span>Price</span>
+        </div>
+        <div className="header-block">
+          <span>Delete</span>
+        </div>
+      </div>
+      {cartItems.map((cartItem) => (
+        <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+      ))}
+      <span className="total">Total: {cartTotal} Rs/-</span>
     </div>
   );
 };
