@@ -1,4 +1,4 @@
-import CategoriesList from "../../components/cateogies-list/categories-list.component";
+import DirectoryList from "../../components/directory-list/directory-list.component";
 
 const Home = () => {
   const categories = [
@@ -29,7 +29,7 @@ const Home = () => {
     },
   ];
 
-  return <CategoriesList categories={categories} />;
+  return <DirectoryList categories={categories} />;
 };
 
 export default Home;
